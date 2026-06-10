@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mission Finalization</title>
+  <style>
+    body {
+      background: black;
+      color: #00ff66;
+      font-family: Consolas, monospace;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .box {
+      border: 2px solid #00ff66;
+      padding: 30px;
+      max-width: 950px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 42px;
+      letter-spacing: 2px;
+    }
+
+    p {
+      font-size: 22px;
+    }
+
+    input, button {
+      font-size: 22px;
+      padding: 12px;
+      margin: 10px;
+      background: black;
+      color: #00ff66;
+      border: 2px solid #00ff66;
+      font-family: Consolas, monospace;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .warning {
+      color: red;
+    }
+
+    #message {
+      margin-top: 25px;
+      font-size: 24px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+
+    <h1>MISSION FINALIZATION</h1>
+
+    <div id="stage1">
+      <p class="warning">FINAL ACCESS REQUIRED</p>
+      <p>ENTER VAULT KEY:</p>
+
+      <input id="vaultKey" placeholder="VAULT KEY">
+      <br>
+      <button onclick="checkVaultKey()">SUBMIT</button>
+    </div>
+
+    <div id="stage2" class="hidden">
+      <p>VAULT KEY ACCEPTED</p>
+      <p>FINAL SCRIPTURE CHALLENGE UNLOCKED</p>
+
+      <p>Let us run with __________ the race that is set before us.</p>
+
+      <input id="finalAnswer" placeholder="FINAL ANSWER">
+      <br>
+      <button onclick="checkFinalAnswer()">VERIFY</button>
+    </div>
+
+    <div id="stage3" class="hidden">
+      <h1>MISSION COMPLETE</h1>
+      <p>YOU HAVE FINISHED THE RACE</p>
+      <p id="timeStamp"></p>
+    </div>
+
+    <div id="message"></div>
+
+  </div>
+
+  <script>
+    function clean(text) {
+      return text.toLowerCase().trim().replace(/\s/g, "");
+    }
+
+    function checkVaultKey() {
+      let key = clean(document.getElementById("vaultKey").value);
+
+      if (key === "crown") {
+        document.getElementById("stage1").classList.add("hidden");
+        document.getElementById("stage2").classList.remove("hidden");
+        document.getElementById("message").innerText = "";
+      } else {
+        document.getElementById("message").innerText = "VAULT KEY REJECTED\nTry again.";
+      }
+    }
+
+    function checkFinalAnswer() {
+      let answer = clean(document.getElementById("finalAnswer").value);
+
+      if (answer === "patience" || answer === "endurance") {
+        document.getElementById("stage2").classList.add("hidden");
+        document.getElementById("stage3").classList.remove("hidden");
+        document.getElementById("message").innerText = "";
+
+        let now = new Date();
+        document.getElementById("timeStamp").innerText =
+          "Completion Time: " + now.toLocaleTimeString();
+      } else {
+        document.getElementById("message").innerText = "FINAL ANSWER NOT VERIFIED\nTry again.";
+      }
+    }
+  </script>
+
+</body>
+</html>
