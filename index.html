@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mission Finalization</title>
+  <style>
+    body {
+      background: black;
+      color: #00ff66;
+      font-family: Consolas, monospace;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .box {
+      border: 2px solid #00ff66;
+      padding: 30px;
+      max-width: 950px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 42px;
+      letter-spacing: 2px;
+    }
+
+    p, select {
+      font-size: 22px;
+    }
+
+    input, button, select {
+      padding: 12px;
+      margin: 10px;
+      background: black;
+      color: #00ff66;
+      border: 2px solid #00ff66;
+      font-family: Consolas, monospace;
+    }
+
+    input, button {
+      font-size: 22px;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .warning {
+      color: red;
+    }
+
+    #message {
+      margin-top: 25px;
+      font-size: 24px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+
+    <h1>MISSION FINALIZATION</h1>
+
+    <div id="stage1">
+      <p class="warning">FINAL ACCESS REQUIRED</p>
+
+      <p>SELECT TEAM:</p>
+      <select id="teamSelect">
+        <option value="">-- SELECT TEAM --</option>
+        <option value="red">RED TEAM</option>
+        <option value="blue">BLUE TEAM</option>
+        <option value="green">GREEN TEAM</option>
+        <option value="gold">GOLD TEAM</option>
+        <option value="purple">PURPLE TEAM</option>
+      </select>
+
+      <p>ENTER VAULT KEY:</p>
+      <input id="vaultKey" placeholder="VAULT KEY">
+      <br>
+      <button onclick="checkVaultKey()">SUBMIT</button>
+    </div>
+
+    <div id="stage2" class="hidden">
+      <p>VAULT KEY ACCEPTED</p>
+      <p>FINAL SCRIPTURE CHALLENGE UNLOCKED</p>
+
+      <p id="versePrompt"></p>
+
+      <input id="finalAnswer" placeholder="FINAL ANSWER">
+      <br>
+      <button onclick="checkFinalAnswer()">VERIFY</button>
+    </div>
+
+    <div id="stage3" class="hidden">
+      <h1>MISSION COMPLETE</h1>
+      <p id="completeTeam"></p>
+      <p>YOU HAVE FINISHED THE RACE</p>
+      <p>Report to the chapel leader.</p>
+      <p id="timeStamp"></p>
+    </div>
+
+    <div id="message"></div>
+
+  </div>
+
+  <script>
+    const teams = {
+      red: {
+        name: "RED TEAM",
+        vaultKey: "crown",
+        prompt: "Let us run with __________ the race that is set before us.",
+        answers: ["patience", "endurance"]
+      },
+
+      blue: {
+        name: "BLUE TEAM",
+        vaultKey: "trophy",
+        prompt: "Run, that ye may __________.",
+        answers: ["obtain"]
+      },
+
+      green: {
+        name: "GREEN TEAM",
+        vaultKey: "wings",
+        prompt: "They shall run, and not be __________.",
+        answers: ["weary"]
+      },
+
+      gold: {
+        name: "GOLD TEAM",
+        vaultKey: "runner",
+        prompt: "Ye did run __________.",
+        answers: ["well"]
+      },
+
+      purple: {
+        name: "PURPLE TEAM",
+        vaultKey: "finish",
+        prompt: "I have finished my __________.",
+        answers: ["race"]
+      }
+    };
+
+    let selectedTeam = null;
+
+    function clean(text) {
+      return text.toLowerCase().trim().replace(/\s/g, "");
+    }
+
+    function checkVaultKey() {
+      let teamValue = document.getElementById("teamSelect").value;
+      let key = clean(document.getElementById("vaultKey").value);
+
+      if (!teamValue) {
+        document.getElementById("message").innerText = "SELECT YOUR TEAM.";
+        return;
+      }
+
+      selectedTeam = teams[teamValue];
+
+      if (key === selectedTeam.vaultKey) {
+        document.getElementById("stage1").classList.add("hidden");
+        document.getElementById("stage2").classList.remove("hidden");
+
+        document.getElementById("versePrompt").innerText = selectedTeam.prompt;
+
+        document.getElementById("message").innerText = "";
+      } else {
+        document.getElementById("message").innerText = "VAULT KEY REJECTED\nTry again.";
+      }
+    }
+
+    function checkFinalAnswer() {
+      let answer = clean(document.getElementById("finalAnswer").value);
+
+      if (selectedTeam.answers.includes(answer)) {
+        document.getElementById("stage2").classList.add("hidden");
+        document.getElementById("stage3").classList.remove("hidden");
+
+        document.getElementById("message").innerText = "";
+
+        let now = new Date();
+
+        document.getElementById("completeTeam").innerText =
+          selectedTeam.name + " COMPLETE";
+
+        document.getElementById("timeStamp").innerText =
+          "Completion Time: " + now.toLocaleTimeString();
+      } else {
+        document.getElementById("message").innerText =
+          "FINAL ANSWER NOT VERIFIED\nTry again.";
+      }
+    }
+  </script>
+
+</body>
+</html>
